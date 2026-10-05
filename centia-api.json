@@ -9531,7 +9531,13 @@
                         "maxLength": 255
                     },
                     "threads": {
-                        "type": "integer"
+                        "description": "How many seeding threads mapcache_seed runs (-n). 1 to tileseeder.maxThreads, which defaults to 4; a higher value is refused with 400 INVALID_REQUEST naming the limit, not clamped to it. Defaults to 1.",
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "minimum": 1,
+                        "example": 2
                     }
                 },
                 "type": "object"
@@ -9586,12 +9592,12 @@
                         "example": "myschema.roads"
                     },
                     "grid": {
-                        "description": "Null only for a legacy row.",
+                        "description": "Null only for a legacy row. The grid's NAME, as the tileset declares it — 'GoogleMapsCompatible' is the title of the same grid and is not accepted.",
                         "type": [
                             "string",
                             "null"
                         ],
-                        "example": "GoogleMapsCompatible"
+                        "example": "g20"
                     },
                     "zoom_start": {
                         "description": "Null only for a legacy row.",

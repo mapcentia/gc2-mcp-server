@@ -23,6 +23,8 @@ Use the smallest matching skill set for the task.
 | `centia-snapshots` | Parquet/FlatGeobuf exports of relations and reading published snapshots (DuckDB) |
 | `centia-realtime` | Realtime WebSocket events, subscriptions with shapes, enabling table change events |
 | `centia-ows` | Serving/querying layers via WMS, WFS, WFS-T and the MapCache (WMTS/TMS/XYZ) proxy; Basic/Bearer/anonymous access, FILTERS, srs/time-slice |
+| `centia-tile-seeding` | Seeding/prerendering MapCache tile caches via the tileseeder job queue |
+| `centia-schema-tiles` | Merged per-schema tilesets: URL forms, strictest-layer auth, per-schema tile settings |
 | `centia-ogc` | OGC API Features/Maps: collections, GeoJSON items with bbox/limit/offset/crs/datetime, map images by URL |
 | `centia-delivery` | Final delivery checklist, MCP coverage check, and handoff quality gate |
 | `danish-search` | Danish address/matrikel typeahead search component (`@centia-io/danish-search`) |

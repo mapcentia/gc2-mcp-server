@@ -1,6 +1,6 @@
 ---
 name: centia-ows
-description: Use when serving or querying layers through the classic OGC web services in Centia BaaS — WMS/UTFGRID/MVT via /api/v4/ows, WFS and WFS-T via /api/v4/wfs, the authorizing MapCache (WMTS/TMS/XYZ) proxy via /api/v4/mapcache, the getOws/postOws/getWfs/postWfs/getMapcache/deleteMapcacheTileset tools, seeding tilesets with the tileseeder job queue (postSeedJob/getSeedJob/getSeedJobs/deleteSeedJob), the FILTERS/labels parameters, srs and time-slice path segments, or Basic/Bearer/anonymous access to protected layers.
+description: Use when serving or querying layers through the classic OGC web services in Centia BaaS — WMS/UTFGRID/MVT via /api/v4/ows, WFS and WFS-T via /api/v4/wfs, the authorizing MapCache (WMTS/TMS/XYZ) proxy via /api/v4/mapcache, the getOws/postOws/getWfs/postWfs/getMapcache/deleteMapcacheTileset tools, the FILTERS/labels parameters, srs and time-slice path segments, or Basic/Bearer/anonymous access to protected layers.
 ---
 
 # OWS: WMS, WFS, WFS-T and MapCache
@@ -9,7 +9,7 @@ Use this skill for the v4 OGC web service endpoints. They are the map/feature ba
 
 ## Availability
 
-Production-ready on GeoCloud2 `master` (2026-08) — **except the tileseeder job queue** (below), which is on GC2 local master only as of 2026-10 and **not** on production `api.centia.io`; its tools cannot be tried against production until it deploys. SDK: `@centia-io/sdk` >= 0.2.12 ships `Ows`, `Wfs` and `Mapcache` (explicit-client pattern: `new Wfs(client)`); they return text/JSON, and `Mapcache.mapcacheUrl()` builds tile URL templates for map libraries. The MCP tools wrap the same routes and return text (XML/JSON), so they suit GetCapabilities/DescribeFeatureType/GetFeature checks, not images or tiles.
+Production-ready on GeoCloud2 `master` (2026-08) — **except the tileseeder job queue and the merged schema-tileset work** (released in GC2 **2026.10.0**, not yet deployed — `api.centia.io` does not have them as of 2026-10; see `centia-tile-seeding` and `centia-schema-tiles`). SDK: `@centia-io/sdk` >= 0.2.12 ships `Ows`, `Wfs` and `Mapcache` (explicit-client pattern: `new Wfs(client)`); they return text/JSON, and `Mapcache.mapcacheUrl()` builds tile URL templates for map libraries. The MCP tools wrap the same routes and return text (XML/JSON), so they suit GetCapabilities/DescribeFeatureType/GetFeature checks, not images or tiles.
 
 ## Endpoints, MCP tools and SDK
 
@@ -26,17 +26,9 @@ WMS GetMap parameters follow the standard (`BBOX`, `WIDTH`, `HEIGHT`, `CRS`/`SRS
 
 WFS `GetFeature` supports `TYPENAME`, `PROPERTYNAME`, `FEATUREID` (`table.key`), `BBOX`, `FILTER` (OGC Filter Encoding XML), `MAXFEATURES`, `SRSNAME`, `OUTPUTFORMAT` (`GML2`/`GML3`), `RESULTTYPE=hits`. There is no start index/offset — page with the OGC API instead.
 
-## Tileseeder job queue (v4)
+## Tile seeding and merged schema tilesets
 
-Seeding a tileset is a queued job on `/api/v4/tileseeder/jobs` (sub-user allowed; replaces the v3 pgrep/kill model, so status and stop work from any node). `postSeedJob` queues one job or an array (`SeedJobInput`: required `tileset`, `grid`, `zoom_start`, `zoom_end`; optional `name`, `extent_layer` — nullable —, `threads`; **any other field is rejected** with 400) → `202` + `Location` with the uuid(s). **`grid` is not free-form**: it must be a grid that tileset declares in the database's tile cache configuration — GC2 generates one called `g20` for every tileset, so that is the answer in practice; any other name → 400 `UNKNOWN_GRID`, whose message lists the tileset's grids (surface it to the user). Note `g20` is the grid's **name**; `GoogleMapsCompatible` is the same grid's **title** (what capabilities documents and WMTS clients show) — sending the title is the classic 400. `zoom_start`/`zoom_end` are validated against the grid's own levels (0–27 for `g20`); the string fields cap at 255 chars; `extent_layer` must be a registered layer the caller may read (else 403/404). POSTing to `.../jobs/{uuid}` is 406. Other errors: `403 INSUFFICIENT_PRIVILEGES` (no access to the tileset), `429 TOO_MANY_PENDING` (`tileseeder.maxPending`, default 20). `getSeedJobs` lists the caller's jobs (super-user: the whole database's), newest first, filters `?status=` (enum `pending`/`running`/`succeeded`/`failed`/`cancelled` — an unknown value is not rejected, it just matches nothing) and `?tileset=`, **without `log`**; `getSeedJob` (uuid, or a comma list → array) includes the `log` tail. Statuses: `pending → running → succeeded|failed|cancelled`, plus computed `stale` (running with no heartbeat for 10 min — the run or its node is gone). `deleteSeedJob` asks a job to stop: `204` if it was still queued (cancelled immediately) or already finished, `202` `{message: "Stopping"}` if running (its worker must act); a comma list validates every uuid before anything is written. Input and response are **separate schemas** — request fields are non-nullable, response rows written before v4 may present `null` there. Not the same thing as `deleteMapcacheTileset` (cache deletion).
-
-## Schema tile settings (v4, merged per-schema tileset)
-
-`/api/v4/schemas/{schema}/tile` (super-user only; also GC2-local-master-only as of 2026-10) configures the **merged** per-schema tilesets `<schema>` and `<schema>.mvt` — backend, TTL, format, metatiling — which used to be hardcoded. `getSchemaTileSettings` returns the **effective** settings (stored over defaults) plus `_stored` (only what is actually saved), `_defaults` (the default for every patchable key — the effective value can't reveal it once a key is stored) and `schema_exists`; `patchSchemaTileSettings` merges (an explicit `null` removes a setting) → `303`, and requires the schema to exist (`404` `SCHEMA_NOT_FOUND`); `deleteSchemaTileSettings` → `204`, idempotent — GET/DELETE deliberately work after the schema is dropped, since the row survives it.
-
-- **`format` configures the image tileset only** (`PNG`, `jpeg_low`, `jpeg_medium`, `jpeg_high`). `MVT` is rejected (the `.mvt` tileset's only possible value *is* MVT) and `JSON` is rejected (no merged `.json` tileset exists); the response reports `vector_format` as read-only.
-- Changing `cache` or `format` does **not** clear the existing cache — old tiles stay in the old backend, unserved and uncollected; plan a reseed/cleanup yourself.
-- The merged schema tileset is currently only reachable through the **unauthenticated Apache alias**, not the authorizing `/api/v4/mapcache` proxy (its layer parsing drops dot-less names) — settings here affect a tileset that serves without auth.
+Seeding/prerendering a tile cache (the `/api/v4/tileseeder/jobs` queue, `postSeedJob`/`getSeedJob`/`getSeedJobs`/`deleteSeedJob`, `UNKNOWN_GRID`, cancellation semantics): see **`centia-tile-seeding`**. The merged per-schema tilesets (`<schema>`/`<schema>.mvt`), their URL forms, strictest-layer authorization, per-schema settings on `/api/v4/schemas/{schema}/tile` and cache clearing: see **`centia-schema-tiles`**.
 
 ## Access model
 
