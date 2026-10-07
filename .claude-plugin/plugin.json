@@ -1,0 +1,15 @@
+{
+  "name": "centia",
+  "displayName": "Centia BaaS",
+  "version": "1.0.35",
+  "description": "Centia BaaS for Claude Code: the Centia MCP server (tools generated from the Centia OpenAPI spec) plus skills covering runtime SDK usage, provisioning, JSON-RPC, auth, OGC/OWS services, snapshots, scheduler, realtime and delivery rules.",
+  "author": {
+    "name": "Centia",
+    "url": "https://centia.io"
+  },
+  "homepage": "https://github.com/centia-io/mcp-server",
+  "repository": "https://github.com/centia-io/mcp-server",
+  "license": "ISC",
+  "keywords": ["centia", "gc2", "baas", "postgis", "geospatial", "mcp"],
+  "skills": ["./skills/"]
+}

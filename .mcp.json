@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "centia": {
+      "command": "npx",
+      "args": ["-y", "@centia-io/mcp-server"]
+    }
+  }
+}
