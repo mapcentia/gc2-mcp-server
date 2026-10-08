@@ -112,23 +112,39 @@ Run `gc2 login` once and the server will pick up the session. To force a static 
 - `npm run build` — Compile TypeScript to CommonJS/ESM in `dist/` via `tsc`.
 - `npm start` — Run the built server (`node dist/index.js`).
 
-## Using AGENTS.md and Skills with AI Coding Agents
-This repository includes an `AGENTS.md` file with global hard rules and a `skills/` folder with task-specific guidance for AI coding agents (like Claude Code, Junie, etc.) when working with Centia BaaS.
+## Using as a Claude Code plugin
+This repository is a Claude Code plugin and its own marketplace. Installing it gives Claude Code the Centia MCP server and all skills in one step:
 
-`AGENTS.md` contains the core rules (tool priority, security baselines, destructive-ops policy), while each skill in `skills/*/SKILL.md` covers a specific workflow area.
+```
+/plugin marketplace add centia-io/mcp-server
+/plugin install centia@centia-io
+```
+
+Run `gc2 login` once so the server can pick up your session (see Authentication above). The skills are then available as `/centia:centia-rules`, `/centia:centia-ows`, etc., and Claude loads them automatically on Centia-related tasks.
+
+To try the plugin from a local checkout without installing it:
+
+```
+claude --plugin-dir /path/to/mcp-server
+```
+
+## Using Skills with AI Coding Agents
+This repository includes a `skills/` folder with guidance for AI coding agents (like Claude Code, Junie, etc.) when working with Centia BaaS.
+
+`skills/centia-rules/SKILL.md` contains the global hard rules (tool priority, security baselines, destructive-ops policy) and routes to the other skills; each remaining skill in `skills/*/SKILL.md` covers a specific workflow area. The `AGENTS.md` at the repo root is a short pointer to `centia-rules` for agents that discover instructions through that file.
 
 To ensure your AI agent follows these rules while developing your application:
 
 1. Copy `AGENTS.md` and the `skills/` folder from this repository to the root of **your own application's** repository.
 2. When starting a session with your AI agent, it will automatically find and follow the guidelines.
 
-**AGENTS.md** covers:
+**`centia-rules`** covers:
 - **Prime Directive**: Preferring MCP tools and official SDKs.
 - **Tool Priority**: Order of interaction (MCP tools > SDK > HTTP).
 - **Security & Auth**: How to handle tokens and OAuth flows correctly.
 - **Destructive Operations Policy**: Requiring explicit confirmation before destructive changes.
 
-**Skills** (`skills/*/SKILL.md`) cover task-specific workflows:
+**Task-specific skills** (`skills/*/SKILL.md`):
 - `centia-runtime-sdk` — Building JS/TS runtime code with `@centia-io/sdk`
 - `centia-provisioning` — Schema, tables, columns, constraints, indexes, migrations
 - `centia-json-rpc` — JSON-RPC method lifecycle and TypeScript interfaces

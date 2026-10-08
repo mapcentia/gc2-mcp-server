@@ -1,6 +1,6 @@
 # Skills Index
 
-This folder contains task-specific skills referenced from `AGENT.md`.
+This folder contains the Centia skills. Start with `centia-rules`, which holds the global hard rules and routes to the task-specific skills below.
 
 ## Quick Routing
 
@@ -8,6 +8,7 @@ Use the smallest matching skill set for the task.
 
 | Skill | Use when |
 |---|---|
+| `centia-rules` | Every Centia-related task: global hard rules, tool priority, destructive-ops policy, skill routing |
 | `centia-runtime-sdk` | Building or refactoring JS/TS runtime code with `@centia-io/sdk` |
 | `centia-provisioning` | Changing schema, tables, columns, constraints, indexes, policies, migrations |
 | `centia-json-rpc` | Creating/updating/calling JSON-RPC methods and generating TypeScript interfaces |
@@ -31,5 +32,5 @@ Use the smallest matching skill set for the task.
 
 ## Core Rule
 
-Global hard rules stay in `AGENT.md`.
+Global hard rules stay in `centia-rules/SKILL.md`; `AGENTS.md` at the repo root only points there.
 Task-specific workflows and references stay in `skills/*/SKILL.md`.
