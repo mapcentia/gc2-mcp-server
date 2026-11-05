@@ -10,20 +10,20 @@ import axios, {AxiosRequestConfig} from "axios";
 import fs from "fs";
 import path from "path";
 import {fileURLToPath} from "url";
-import {createConfigstoreTokenStore} from "@centia-io/sdk/node";
+import {createConfigstoreTokenStore} from "@mapcentia/gc2-sdk/node";
 import {
     createTokenProvider,
     CodeFlow,
     NotLoggedInError,
     SessionExpiredError,
     type TokenProvider,
-} from "@centia-io/sdk";
+} from "@mapcentia/gc2-sdk";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const apiSpecPath = path.join(__dirname, "..", "centia-api.json");
 const apiSpec = JSON.parse(fs.readFileSync(apiSpecPath, "utf-8"));
 
-const DEFAULT_HOST = "https://api.centia.io";
+const DEFAULT_HOST = "https://api.gc2.io";
 const tokenStore = createConfigstoreTokenStore("gc2-env"); // shared with gc2-cli
 
 async function getApiBaseUrl(): Promise<string> {
@@ -56,7 +56,7 @@ async function getAccessToken(): Promise<string> {
 
 const server = new Server(
     {
-        name: "centia-io-mcp-server",
+        name: "gc2-mcp-server",
         version: "1.0.0",
     },
     {
@@ -431,7 +431,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 isError: true,
                 content: [{
                     type: "text",
-                    text: "Not logged in to Centia. Run `gc2 login` (npm i -g @mapcentia/gc2-cli) " +
+                    text: "Not logged in to GC2. Run `gc2 login` (npm i -g @mapcentia/gc2-cli) " +
                         "or set API_TOKEN env var.",
                 }],
             };

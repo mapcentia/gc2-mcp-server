@@ -1,10 +1,10 @@
 {
-  "name": "@centia-io/mcp-server",
-  "version": "1.0.36",
+  "name": "@mapcentia/gc2-mcp-server",
+  "version": "1.1.0",
   "publishConfig": {
     "access": "public"
   },
-  "description": "Centia MCP Server",
+  "description": "GC2 (Geo Compute Cloud) MCP Server",
   "type": "module",
   "bin": {
     "mcp-server": "dist/index.js"
@@ -24,7 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@centia-io/sdk": "^0.2.16",
+    "@mapcentia/gc2-sdk": "^0.3.0",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "axios": "^1.13.5",
     "zod": "^4.3.6"
