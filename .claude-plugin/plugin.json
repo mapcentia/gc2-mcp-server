@@ -1,15 +1,24 @@
 {
-  "name": "centia",
-  "displayName": "Centia BaaS",
-  "version": "1.0.35",
-  "description": "Centia BaaS for Claude Code: the Centia MCP server (tools generated from the Centia OpenAPI spec) plus skills covering runtime SDK usage, provisioning, JSON-RPC, auth, OGC/OWS services, snapshots, scheduler, realtime and delivery rules.",
+  "name": "gc2",
+  "displayName": "GC2 (Geo Compute Cloud)",
+  "version": "1.1.0",
+  "description": "GC2 (Geo Compute Cloud) for Claude Code: the GC2 MCP server (tools generated from the GC2 OpenAPI spec) plus skills covering runtime SDK usage, provisioning, JSON-RPC, auth, OGC/OWS services, snapshots, scheduler, realtime and delivery rules.",
   "author": {
-    "name": "Centia",
-    "url": "https://centia.io"
+    "name": "MapCentia",
+    "url": "https://gc2.io"
   },
-  "homepage": "https://github.com/centia-io/mcp-server",
-  "repository": "https://github.com/centia-io/mcp-server",
+  "homepage": "https://github.com/mapcentia/mcp-server",
+  "repository": "https://github.com/mapcentia/mcp-server",
   "license": "ISC",
-  "keywords": ["centia", "gc2", "baas", "postgis", "geospatial", "mcp"],
-  "skills": ["./skills/"]
+  "keywords": [
+    "gc2",
+    "geo compute cloud",
+    "baas",
+    "postgis",
+    "geospatial",
+    "mcp"
+  ],
+  "skills": [
+    "./skills/"
+  ]
 }

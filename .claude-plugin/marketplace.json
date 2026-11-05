@@ -1,22 +1,22 @@
 {
-  "name": "centia-io",
+  "name": "mapcentia",
   "owner": {
-    "name": "Centia",
-    "url": "https://centia.io"
+    "name": "MapCentia",
+    "url": "https://gc2.io"
   },
   "metadata": {
-    "description": "Official Centia plugins for Claude Code"
+    "description": "Official MapCentia plugins for Claude Code"
   },
   "plugins": [
     {
-      "name": "centia",
+      "name": "gc2",
       "source": ".",
-      "description": "Centia BaaS for Claude Code: the Centia MCP server plus skills for runtime SDK, provisioning, JSON-RPC, auth, OGC/OWS, snapshots, scheduler, realtime and delivery rules.",
-      "version": "1.0.35",
+      "description": "GC2 (Geo Compute Cloud) for Claude Code: the GC2 MCP server plus skills for runtime SDK, provisioning, JSON-RPC, auth, OGC/OWS, snapshots, scheduler, realtime and delivery rules.",
+      "version": "1.1.0",
       "category": "development",
       "keywords": [
-        "centia",
         "gc2",
+        "geo compute cloud",
         "baas",
         "postgis",
         "geospatial",

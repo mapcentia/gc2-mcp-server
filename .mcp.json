@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "centia": {
+    "gc2": {
       "command": "npx",
-      "args": ["-y", "@centia-io/mcp-server"]
+      "args": ["-y", "@mapcentia/gc2-mcp-server"]
     }
   }
 }

@@ -1,0 +1,58 @@
+---
+name: gc2-scheduler
+description: Use when creating or managing automated data imports in GC2 BaaS — /api/v4/scheduler jobs and runs, the SchedulerJob/SchedulerRun tools, five-field cron schedules, WFS/file import jobs, starting or stopping runs manually, monitoring run status/heartbeat/stale, or queueing snapshots after imports.
+---
+
+# Scheduler (automated imports)
+
+Use this skill for the v4 Scheduler API: cron-scheduled import jobs (`/api/v4/scheduler/jobs`) that a worker executes with ogr2ogr, and the runs that track each execution (`/api/v4/scheduler/runs`).
+
+## Availability and access
+
+On GC2 local master as of 2026-09 — **not** on production `api.gc2.io`. MCP tools ship with `@mapcentia/gc2-mcp-server` >= 1.0.25 (restart the server after upgrading the spec). No `@mapcentia/gc2-sdk` class as of 0.2.16 — use the MCP tools or spec-backed HTTP. **Super-user only** (`Scope::SUPER_USER_ONLY` on both jobs and runs): a sub-user token gets 403.
+
+## Jobs
+
+| Operation | Route / MCP tool | Result |
+|---|---|---|
+| List / get | `GET /api/v4/scheduler/jobs/{id}` / `getSchedulerJob` — omit `id` to list all jobs of the database (bare array); one id or a comma list (`5497,5498`) | `200`; `404` `JOB_NOT_FOUND` |
+| Create | `POST .../jobs`, body = one job **or an array** / `postSchedulerJob` | `201` + `Location: .../jobs/{id[,id…]}` (empty body — parse Location for ids). Arrays are **all-or-nothing** |
+| Update | `PATCH .../jobs/{id}` (single id), partial body / `patchSchedulerJob` | `303` + `Location` |
+| Delete | `DELETE .../jobs/{id[,id…]}` / `deleteSchedulerJob` — **all ids are checked before anything is deleted** | `204`; `404`; `409` `JOB_RUNNING` while any listed job has a running run |
+
+Required on create: `name`, `schema`, `url`, `schedule` (five-field cron `min hour dom month dow`, e.g. `0 3 * * *`; bad field → 400 `INVALID_CRON_FIELD`). Defaults: `epsg` 4326, `type` "AUTO", `encoding` "UTF8", `delete_append` false, `download_schema` true, `active` true, `snapshot` false, `use_sortby` true (the automatic WFS 2.0.0 paging adds a `sortBy` so pages don't overlap or skip rows — set `false` only for a WFS server that rejects `sortBy`, which must then page in a stable order itself; irrelevant to non-paged jobs, and a PATCH that omits it keeps the stored value). **The imported table is named after the job, and the name is normalised on write** (ASCII, lower-case, separator runs → `_`; "Bygninger 2026-09" → `bygninger_2026_09`) — read the job back to see the stored name. `snapshot: true` queues a snapshot of the table after each successful import; `snapshot_formats` (array of `parquet`/`flatgeobuf`, nullable) picks its formats, `null`/omitted = server default, and an explicit `null` on PATCH resets it (see `gc2-snapshots`). Read-only fields: `id`, `lastcheck`, `lasttimestamp`, `lastrun`, `report`.
+
+## Runs
+
+| Operation | Route / MCP tool | Result |
+|---|---|---|
+| List / get | `GET /api/v4/scheduler/runs/{uuid}` / `getSchedulerRun` — omit `uuid` to list (running first, then the newest 50 finished); filters `?job=` and `?status=` | `200`; `404` `RUN_NOT_FOUND` |
+| Start now | `POST .../runs`, body `{job, force?}` / `postSchedulerRun` | `202` `{job, status: "starting", _links.runs}` — **asynchronous**: poll the runs list for the new run; `404` `JOB_NOT_FOUND`; `409` `JOB_RUNNING` |
+| Stop | `DELETE .../runs/{uuid}` / `deleteSchedulerRun` | `200` `{uuid, signal: "SIGINT"}` — SIGINT, escalated to SIGKILL after 30 s (the call can take ~30 s; mind timeouts); `404` (only *running* runs can be stopped); `409` `RUN_ON_OTHER_HOST` (multi-host: the request must land on the host running it — retry) |
+
+Run fields: `uuid`, `job`, `name`, `pid`, `host`, `slot`, `status` (`running`/`succeeded`/`failed`/`skipped`/`lost`), `stale` (true = running with no heartbeat or start signal for 5 minutes — candidate for stopping), `started_at`, `heartbeat`, `finished_at`, `exit_reason`, `log` (the run's stdout, updated at every heartbeat and on finish, tail-capped at 1 MB — **only in the single-run GET, never in listings**).
+
+## WFS 2.0.0 paging of the job URL
+
+The worker auto-pages a job URL **only** when it is a plain WFS 2.0.0 GetFeature URL: `service=WFS` + `request=GetFeature` (values case-insensitive), `version` exactly `2.0.0`, a `typeNames`/`typename`, and **no `startIndex`** — an explicit `startIndex` means the caller pages by hand, and the URL is fetched once as-is. Grid notation (`…|http…`) and WFS 1.x keep their existing non-paged paths.
+
+- **Page size:** `count=N` in the job URL sets it; absent or ≤ 0 → default **10000**. Page URLs are rebuilt with canonical `startIndex`/`count`/`sortBy` (the originals are stripped).
+- **`sortBy` precedence:** `use_sortby: false` → never sent, even if the URL asked for it (the server must page in a stable order itself). Else a `sortBy` in the job URL wins. Else derived from **DescribeFeatureType**: the first element (document order) with an exact identity name — `id`, `fid`, `gid`, `objectid`, `ogc_fid`, `identifier`, `gml_id` — else the first whose name ends in `_id` (both matched case-insensitively). No candidate → a run-log Warning and paging **without** `sortBy` (same stable-order burden on the server); the run does not fail.
+- **Stop conditions:** `startIndex` starts at 0 and advances by each page's `numberReturned`. The loop stops when `numberReturned` is missing, 0 or **smaller than the page size**, or when `startIndex + returned >= numberMatched`. A non-numeric `numberMatched` (`"unknown"`) is tolerated — the short-page rule ends the loop.
+- The run's `log` (single-run `getSchedulerRun`) prints the detection, the chosen `sortBy` (or the warning) and the page progress — read it when paging behaves unexpectedly.
+
+**Cooldown:** cron-scheduled runs respect the server's `gc2scheduler.minInterval` (a job that ran more recently is skipped by the picker). A manual `postSchedulerRun` **bypasses** the cooldown — the only guard is the 409 while a run is in flight. `force: true` makes the run **ignore `delete_append` and overwrite** the target table (full reload) — data a normal append run would preserve is replaced.
+
+## Common mistakes
+
+| Mistake | Reality |
+|---|---|
+| Assuming production availability | GC2 local master only as of 2026-09; MCP tools need spec >= 1.0.25 + server restart |
+| Using a sub-user token | Both jobs and runs are super-user only → `403` |
+| Expecting the job object from POST | `201` with empty body; ids are only in the `Location` header (comma list for arrays) |
+| Treating the `202` from a manual start as "import done" | It means "starting" — poll `getSchedulerRun` until the run leaves `running` |
+| Assuming the stored job name equals what was sent | Normalised on write; the imported table is named after the normalised name |
+| "There is no cooldown" / "manual runs are throttled" | Cron runs respect `gc2scheduler.minInterval`; manual starts bypass it |
+| Casual `force: true` | It overrides `delete_append` and overwrites the table |
+| Deleting jobs while one is importing | `409` `JOB_RUNNING`, nothing deleted — stop the run or wait |
+| Sending `use_sortby` to a GC2 without commit 577ba9aa | v4 write bodies reject unknown fields → `400` `INPUT_VALIDATION_ERROR` — send only fields the target server's version knows, and never pre-fill defaults into bodies |

@@ -1,11 +1,11 @@
 ---
 name: danish-search
-description: Danish address and cadastral (matrikel) search component for Centia apps. Covers installation, initialization, option configuration, result handling, and integration with Centia SDK for spatial queries.
+description: Danish address and cadastral (matrikel) search component for GC2 apps. Covers installation, initialization, option configuration, result handling, and integration with GC2 SDK for spatial queries.
 ---
 
-# Danish Search Component — `@centia-io/danish-search`
+# Danish Search Component — `@mapcentia/danish-search`
 
-Use this skill when building Centia.io apps that need Danish address or cadastral search.
+Use this skill when building GC2 apps that need Danish address or cadastral search.
 
 ## What it does
 
@@ -17,7 +17,7 @@ cascading: street → address, ejerlav → jordstykke.
 
 | | |
 |---|---|
-| **npm** | `@centia-io/danish-search` |
+| **npm** | `@mapcentia/danish-search` |
 | **Entry (ESM)** | `dist/danish-search.mjs` |
 | **Entry (CJS)** | `dist/danish-search.cjs` |
 | **Stylesheet** | `dist/style.css` |
@@ -25,7 +25,7 @@ cascading: street → address, ejerlav → jordstykke.
 ## Installation
 
 ```bash
-pnpm add @centia-io/danish-search
+pnpm add @mapcentia/danish-search
 ```
 
 ## Source files (development)
@@ -40,14 +40,14 @@ pnpm add @centia-io/danish-search
 ## Hard rules
 
 - Do not add jQuery, Bootstrap, or other framework dependencies.
-- Do not perform spatial/SQL queries inside the component — emit data and let the consuming app query Centia.io.
+- Do not perform spatial/SQL queries inside the component — emit data and let the consuming app query GC2.
 - Do not hardcode host or database — always pass via options.
 
 ## Initialization
 
 ```js
-import danish from "@centia-io/danish-search";
-import "@centia-io/danish-search/style.css";
+import danish from "@mapcentia/danish-search";
+import "@mapcentia/danish-search/style.css";
 
 const inputEl = danish({
     el: ".custom-search",          // CSS selector for input element (default: ".custom-search")
@@ -91,7 +91,7 @@ Returns the input `HTMLElement`.
 ## Listening via event instead of callback
 
 ```js
-import danish from "@centia-io/danish-search";
+import danish from "@mapcentia/danish-search";
 
 const inputEl = danish({ el: "#my-input" });
 
@@ -101,7 +101,7 @@ inputEl.addEventListener("search:select", (e) => {
 });
 ```
 
-## Integrating with Centia SDK
+## Integrating with GC2 SDK
 
 The `feature` in the callback is a full GeoJSON Feature (EPSG:4326) with the
 geometry of the selected address or matrikel parcel. Use it directly for spatial
@@ -110,8 +110,8 @@ queries against your own data via `ST_Intersects`.
 ### Find rows in your own table that intersect the selected feature
 
 ```js
-import danish from "@centia-io/danish-search";
-import { Sql } from "@centia-io/sdk";
+import danish from "@mapcentia/danish-search";
+import { Sql } from "@mapcentia/gc2-sdk";
 
 const sql = new Sql();
 
@@ -209,7 +209,7 @@ The component needs an `<input>` element matching the `el` selector:
 <input class="custom-search" type="text" placeholder="Søg adresse eller matrikel...">
 ```
 
-Import `@centia-io/danish-search/style.css` for dropdown styling, or provide your own styles for these classes:
+Import `@mapcentia/danish-search/style.css` for dropdown styling, or provide your own styles for these classes:
 
 - `.tt-dropdown-menu` — dropdown container
 - `.tt-suggestions` — suggestions wrapper
@@ -219,6 +219,6 @@ Import `@centia-io/danish-search/style.css` for dropdown styling, or provide you
 
 ## Security notes
 
-- GID values come from Elasticsearch and are used in SQL queries — always use parameterized queries or validate GIDs when building SQL for Centia.
+- GID values come from Elasticsearch and are used in SQL queries — always use parameterized queries or validate GIDs when building SQL for GC2.
 - DAR `id` values are UUIDs. Matrikel `gid` values are integers.
 - Do not expose the GC2 Elasticsearch endpoint to user-controlled input beyond the search query itself.
