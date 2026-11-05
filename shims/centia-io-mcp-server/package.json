@@ -4,7 +4,7 @@
   "description": "Deprecated: renamed to @mapcentia/gc2-mcp-server",
   "type": "module",
   "bin": {
-    "mcp-server": "./run.js"
+    "mcp-server": "run.js"
   },
   "files": [
     "run.js"
