@@ -7,8 +7,8 @@
     "name": "MapCentia",
     "url": "https://gc2.io"
   },
-  "homepage": "https://github.com/mapcentia/mcp-server",
-  "repository": "https://github.com/mapcentia/mcp-server",
+  "homepage": "https://github.com/mapcentia/gc2-mcp-server",
+  "repository": "https://github.com/mapcentia/gc2-mcp-server",
   "license": "ISC",
   "keywords": [
     "gc2",

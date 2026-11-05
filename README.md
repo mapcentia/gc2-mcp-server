@@ -116,7 +116,7 @@ Run `gc2 login` once and the server will pick up the session. To force a static 
 This repository is a Claude Code plugin and its own marketplace. Installing it gives Claude Code the GC2 MCP server and all skills in one step:
 
 ```
-/plugin marketplace add mapcentia/mcp-server
+/plugin marketplace add mapcentia/gc2-mcp-server
 /plugin install gc2@mapcentia
 ```
 
