@@ -1,0 +1,30 @@
+{
+  "name": "gc2",
+  "version": "1.1.0",
+  "description": "GC2 (Geo Compute Cloud) for Codex: the GC2 MCP server plus skills for runtime SDK usage, provisioning, JSON-RPC, auth, OGC/OWS services, snapshots, scheduler, realtime and delivery rules.",
+  "author": {
+    "name": "MapCentia",
+    "url": "https://gc2.io"
+  },
+  "homepage": "https://github.com/mapcentia/gc2-mcp-server",
+  "repository": "https://github.com/mapcentia/gc2-mcp-server",
+  "license": "ISC",
+  "keywords": [
+    "gc2",
+    "geo compute cloud",
+    "baas",
+    "postgis",
+    "geospatial",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "GC2 (Geo Compute Cloud)",
+    "shortDescription": "GC2 MCP tools and geospatial development skills",
+    "developerName": "MapCentia",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://gc2.io"
+  }
+}

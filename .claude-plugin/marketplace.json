@@ -5,14 +5,18 @@
     "url": "https://gc2.io"
   },
   "metadata": {
-    "description": "Official MapCentia plugins for Claude Code"
+    "description": "Official MapCentia plugins for Claude Code and Codex"
   },
   "plugins": [
     {
       "name": "gc2",
-      "source": ".",
-      "description": "GC2 (Geo Compute Cloud) for Claude Code: the GC2 MCP server plus skills for runtime SDK, provisioning, JSON-RPC, auth, OGC/OWS, snapshots, scheduler, realtime and delivery rules.",
+      "source": "./",
+      "description": "GC2 (Geo Compute Cloud) for Claude Code and Codex: the GC2 MCP server plus skills for runtime SDK, provisioning, JSON-RPC, auth, OGC/OWS, snapshots, scheduler, realtime and delivery rules.",
       "version": "1.1.0",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
       "category": "development",
       "keywords": [
         "gc2",

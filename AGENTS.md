@@ -4,4 +4,4 @@ The global hard rules for working with GC2 BaaS live in `skills/gc2-rules/SKILL.
 
 Read that skill first on every GC2-related task. It covers tool priority, runtime-vs-provisioning boundaries, security and auth baselines, the destructive-operations confirmation policy, and routing to the task-specific `skills/gc2-*/SKILL.md` files.
 
-This file is kept so agents that discover instructions via `AGENTS.md` (Junie, Codex, etc.) still find the rules. Claude Code users get the same rules through the `gc2-rules` skill in the plugin.
+This file is kept so agents that discover instructions via `AGENTS.md` (Junie, Codex, etc.) still find the rules. Claude Code and Codex plugin users get the same rules through the bundled `gc2-rules` skill.

@@ -130,8 +130,37 @@ To try the plugin from a local checkout without installing it:
 claude --plugin-dir /path/to/mcp-server
 ```
 
+## Using as a Codex plugin
+
+The Codex plugin bundles the same GC2 MCP server and skills as the Claude Code plugin. It uses `.codex-plugin/plugin.json`, the shared `.mcp.json` and `skills/`, and the existing `.claude-plugin/marketplace.json` catalog, which Codex supports as a compatibility format. See the [OpenAI plugin documentation](https://developers.openai.com/plugins/build/plugins).
+
+With a Codex CLI that supports `codex plugin`, install from a local checkout:
+
+```bash
+# Run from this repository's root
+codex plugin marketplace add .
+codex plugin add gc2@mapcentia
+```
+
+Once the Codex plugin files are published to GitHub, install from the repository instead:
+
+```bash
+codex plugin marketplace add mapcentia/gc2-mcp-server
+codex plugin add gc2@mapcentia
+```
+
+Run `gc2 login` once (see Authentication above), then restart Codex and start a new conversation to load the plugin's skills and MCP tools. In the desktop app, the plugin is also available from the **MapCentia** marketplace in the plugin browser after adding that marketplace.
+
+Check installation with:
+
+```bash
+codex plugin list --marketplace mapcentia
+```
+
+For MCP tools alone, without the bundled skills, use `codex mcp add gc2 -- npx -y @mapcentia/gc2-mcp-server` instead of installing the plugin.
+
 ## Using Skills with AI Coding Agents
-This repository includes a `skills/` folder with guidance for AI coding agents (like Claude Code, Junie, etc.) when working with GC2 BaaS.
+This repository includes a `skills/` folder with guidance for AI coding agents (like Claude Code, Codex, Junie, etc.) when working with GC2 BaaS.
 
 `skills/gc2-rules/SKILL.md` contains the global hard rules (tool priority, security baselines, destructive-ops policy) and routes to the other skills; each remaining skill in `skills/*/SKILL.md` covers a specific workflow area. The `AGENTS.md` at the repo root is a short pointer to `gc2-rules` for agents that discover instructions through that file.
 
