@@ -9,7 +9,7 @@ Use this skill for the v4 Feature API (`/api/v4/schemas/{schema}/tables/{table}/
 
 ## Availability
 
-Lives on the GeoCloud2 branch `dev/multiple_styles` (commits `25900b64`…`844d8fd6`, 2026-08-25/26). As of 2026-08 it is **not** on production `api.gc2.io` — assume dev-only. SDK support: `@mapcentia/gc2-sdk` **>= 0.2.11** (published on npm; the `Features` class is absent in <= 0.2.10).
+Lives on the GeoCloud2 branch `dev/multiple_styles` (commits `25900b64`…`844d8fd6`, 2026-08-25/26). As of 2026-08 it is **not** on production `api.gc2.io` — assume dev-only. SDK support: `@mapcentia/gc2-sdk` 0.3.0+ (the `Features` class is absent in `@centia-io/sdk` <= 0.2.10).
 
 ## Endpoints and semantics
 
@@ -32,7 +32,7 @@ No PUT/upsert. No collection GET — reading a whole table is a SQL API or WFS j
 - PATCH: the path key wins; without it every feature must carry its primary key in `properties` (400 `PRIMARY_KEY_MISSING`). You **cannot PATCH one path key with a collection** (400 `INVALID_DATA`) — omit the key to batch-update. Omitted properties stay untouched.
 - Property encoding (WFS-T): booleans become `t`/`f`, **JSON arrays are converted to PostgreSQL array literals automatically** — send plain JSON values, do not pre-format `"{1,2,3}"` strings.
 
-## SDK (>= 0.2.11)
+## SDK (0.3.0+)
 
 Standalone class **`Features`** (plural — `Feature` is the GeoJSON type), explicit-client pattern: `new Features(client.http)`. Methods: `getFeature<P>(schema, table, key | keys[], {srs?})` → `GeoJsonFeature<P> | GeoJsonFeatureCollection<P>` (union — normalize the shape yourself); `postFeature(schema, table, body, {srs?})` and `patchFeature(schema, table, body, {feature?, srs?})` → `{location}`; `deleteFeature(schema, table, key)`. Own minimal GeoJSON types (`GeoJsonFeature`, `GeoJsonFeatureCollection`, `GeoJsonGeometry`), no `@types/geojson`. Errors: `CentiaApiError` (`.status`/`.code`).
 

@@ -9,7 +9,7 @@ Use this skill for the tilesets drawn from **every layer of a schema at once**: 
 
 ## Availability
 
-Released in GeoCloud2 **2026.10.0** (tagged) but **not deployed** to production `api.gc2.io` as of 2026-10: the settings API, the `sort_id` ordering, the authorizing-proxy support and the cache-clearing semantics below all ship with that release. MCP tools in `@mapcentia/gc2-mcp-server` >= 1.0.35.
+Released in GeoCloud2 **2026.10.0** (tagged) but **not deployed** to production `api.gc2.io` as of 2026-10: the settings API, the `sort_id` ordering, the authorizing-proxy support and the cache-clearing semantics below all ship with that release. MCP tools in `@mapcentia/gc2-mcp-server` 1.1.0+.
 
 ## Fetching tiles — URL forms (the classic 403)
 

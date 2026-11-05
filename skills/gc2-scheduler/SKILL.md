@@ -9,7 +9,7 @@ Use this skill for the v4 Scheduler API: cron-scheduled import jobs (`/api/v4/sc
 
 ## Availability and access
 
-On GC2 local master as of 2026-09 — **not** on production `api.gc2.io`. MCP tools ship with `@mapcentia/gc2-mcp-server` >= 1.0.25 (restart the server after upgrading the spec). No `@mapcentia/gc2-sdk` class as of 0.2.16 — use the MCP tools or spec-backed HTTP. **Super-user only** (`Scope::SUPER_USER_ONLY` on both jobs and runs): a sub-user token gets 403.
+On GC2 local master as of 2026-09 — **not** on production `api.gc2.io`. MCP tools ship with `@mapcentia/gc2-mcp-server` 1.1.0+ (restart the server after upgrading the spec). No `@mapcentia/gc2-sdk` class as of 0.3.0 — use the MCP tools or spec-backed HTTP. **Super-user only** (`Scope::SUPER_USER_ONLY` on both jobs and runs): a sub-user token gets 403.
 
 ## Jobs
 
@@ -47,7 +47,7 @@ The worker auto-pages a job URL **only** when it is a plain WFS 2.0.0 GetFeature
 
 | Mistake | Reality |
 |---|---|
-| Assuming production availability | GC2 local master only as of 2026-09; MCP tools need spec >= 1.0.25 + server restart |
+| Assuming production availability | GC2 local master only as of 2026-09; MCP tools need `@mapcentia/gc2-mcp-server` 1.1.0+ + server restart |
 | Using a sub-user token | Both jobs and runs are super-user only → `403` |
 | Expecting the job object from POST | `201` with empty body; ids are only in the `Location` header (comma list for arrays) |
 | Treating the `202` from a manual start as "import done" | It means "starting" — poll `getSchedulerRun` until the run leaves `running` |

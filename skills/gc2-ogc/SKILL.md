@@ -9,7 +9,7 @@ Use this skill for the v4 OGC API under `/api/v4/ogc/database/{database}`: a sta
 
 ## Availability
 
-Lives on the GeoCloud2 branch `feature/v4-ogc-api` (2026-09-10/11). **Not** on production `api.gc2.io` yet — assume dev-only. SDK: `@mapcentia/gc2-sdk` >= 0.2.13 ships the `Ogc` class (explicit-client pattern, `new Ogc(client)`) with `getLandingPage`, `getConformance`, `getCollections`, `getCollection`, `getItems<P>`, `getItem<P>`, and the URL builders `mapUrl`/`datasetMapUrl` for images, plus `OGC_CRS84` and `ogcEpsgCrs(code)` for CRS URIs. Otherwise use the MCP tools or plain HTTP. `f=jpeg` maps need the WMS mapfiles regenerated once after upgrade (save any layer via `postLayer`, or the legacy `/controllers/mapfile` endpoint).
+Lives on the GeoCloud2 branch `feature/v4-ogc-api` (2026-09-10/11). **Not** on production `api.gc2.io` yet — assume dev-only. SDK: `@mapcentia/gc2-sdk` 0.3.0+ ships the `Ogc` class (explicit-client pattern, `new Ogc(client)`) with `getLandingPage`, `getConformance`, `getCollections`, `getCollection`, `getItems<P>`, `getItem<P>`, and the URL builders `mapUrl`/`datasetMapUrl` for images, plus `OGC_CRS84` and `ogcEpsgCrs(code)` for CRS URIs. Otherwise use the MCP tools or plain HTTP. `f=jpeg` maps need the WMS mapfiles regenerated once after upgrade (save any layer via `postLayer`, or the legacy `/controllers/mapfile` endpoint).
 
 ## Routes and MCP tools
 

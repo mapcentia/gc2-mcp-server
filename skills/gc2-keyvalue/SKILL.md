@@ -9,7 +9,7 @@ Use this skill for the v4 Keyvalue API (`/api/v4/keyvalue/{key}`): per-database 
 
 ## Availability
 
-Lives on the GeoCloud2 branch `dev/multiple_styles` (commits `2213a099`, `3897be13`) and requires the v3 migration run (`GET /api/v3/admin/migrations` adds `owner`/`public` columns to `settings.key_value`). As of 2026-08 it is **not** confirmed on production `api.gc2.io` — assume dev-only. SDK support: `@mapcentia/gc2-sdk` **>= 0.2.10** (not 0.2.9). The legacy v2 `/api/v2/keyvalue` is unchanged and separate.
+Lives on the GeoCloud2 branch `dev/multiple_styles` (commits `2213a099`, `3897be13`) and requires the v3 migration run (`GET /api/v3/admin/migrations` adds `owner`/`public` columns to `settings.key_value`). As of 2026-08 it is **not** confirmed on production `api.gc2.io` — assume dev-only. SDK support: `@mapcentia/gc2-sdk` 0.3.0+ (0.2.10+ under the old `@centia-io/sdk` name). The legacy v2 `/api/v2/keyvalue` is unchanged and separate.
 
 ## Endpoints and semantics
 
@@ -35,7 +35,7 @@ Entry shape: `{id: int, key, value: <decoded JSON>, owner: string|null, public: 
 
 `GET .../{key}?paths=user.name,active` returns only the named sub-trees: comma separates paths, dot navigates; the result `value` is keyed by the path strings, e.g. `{"value": {"user.name": "Alice", "active": true}}`. Empty path or segment → `400` `INVALID_PATHS`. No other query params exist — **no `like`/`filter`** listing (that was v2 only); filter key names client-side.
 
-## SDK (>= 0.2.10)
+## SDK (0.3.0+)
 
 Standalone class, explicit-client pattern: `new Keyvalue(client.http)`. Methods `getKeyvalue()` (list) / `getKeyvalue<T>(key)` / `getKeyvalue(key, paths)` / `postKeyvalue<T>(key, {value, public?})` / `patchKeyvalue<T>(key, {value?, public?})` / `deleteKeyvalue(key)`; errors are `CentiaApiError` (`.status`/`.code`). Types: `KeyvalueEntry<T>`, `KeyvalueProjection`.
 
@@ -49,4 +49,4 @@ Standalone class, explicit-client pattern: `new Keyvalue(client.http)`. Methods 
 | `like=`/`filter=` query params on v4 | v2-only; v4 lists everything visible, filter client-side |
 | Expecting `200` from PATCH | Returns `303 See Other` — disable auto-redirect |
 | Expecting `403` when touching another user's key | Non-owned rows are invisible to writes → `404 KEY_NOT_FOUND` |
-| Using `@mapcentia/gc2-sdk` 0.2.9 for Keyvalue | The `Keyvalue` class ships in 0.2.10+ |
+| Using `@centia-io/sdk` <= 0.2.9 for Keyvalue | The `Keyvalue` class ships in `@mapcentia/gc2-sdk` 0.3.0+ (and `@centia-io/sdk` 0.2.10+) |

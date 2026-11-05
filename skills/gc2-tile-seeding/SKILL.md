@@ -9,7 +9,7 @@ Use this skill to prerender ("seed") tiles for a MapCache tileset through the v4
 
 ## Availability
 
-Released in GeoCloud2 **2026.10.0** (tagged) but **not deployed** to production `api.gc2.io` as of 2026-10 — the tools cannot be tried against production until a deploy. MCP tools ship in `@mapcentia/gc2-mcp-server` >= 1.0.34. Sub-users allowed (403 `INSUFFICIENT_PRIVILEGES` without access to the tileset).
+Released in GeoCloud2 **2026.10.0** (tagged) but **not deployed** to production `api.gc2.io` as of 2026-10 — the tools cannot be tried against production until a deploy. MCP tools ship in `@mapcentia/gc2-mcp-server` 1.1.0+. Sub-users allowed (403 `INSUFFICIENT_PRIVILEGES` without access to the tileset).
 
 ## The queue model
 

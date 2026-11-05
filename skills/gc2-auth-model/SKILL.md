@@ -26,7 +26,7 @@ Required SDK classes:
 
 Forbidden:
 
-- `CENTIA_ACCESS_TOKEN` in frontend code
+- `GC2_ACCESS_TOKEN` in frontend code
 - service tokens in browser app code
 - manual OAuth implementation
 - provisioning API calls from browser runtime
@@ -48,14 +48,14 @@ flow.signOut()       // clears tokens
 - Prerequisites: a default user must exist on the database (otherwise 404 `NO_DEFAULT_USER_FOUND`) and an OAuth client must be registered (`postClient`); unknown client → 401 `invalid_grant`, wrong secret → 401 `invalid_client`.
 - Use it for read-only/public UIs and for token-only endpoints (Feature, SQL, GraphQL, RPC) that need a bearer even for public data. Never grant the default user write or admin privileges to make a guest app "work".
 - In browsers use a **public** client so no secret ships in the bundle; switch to `CodeFlow` once the user signs in.
-- Errors are thrown as plain `Error` with status and response body, like the other auth flows — not `CentiaApiError`. `GuestFlow` ships in `@mapcentia/gc2-sdk` >= 0.2.14.
+- Errors are thrown as plain `Error` with status and response body, like the other auth flows — not `CentiaApiError`. `GuestFlow` ships in `@mapcentia/gc2-sdk` 0.3.0+ (0.2.14+ under the old `@centia-io/sdk` name).
 
 ## Server and CLI
 
 Allowed methods:
 
 - `PasswordFlow`
-- `CENTIA_ACCESS_TOKEN` for MCP/HTTP fallback
+- `GC2_ACCESS_TOKEN` for MCP/HTTP fallback
 
 Typical use:
 
@@ -91,18 +91,18 @@ Forbidden:
 
 Server/provisioning:
 
-- `CENTIA_HOST`
-- `CENTIA_CLIENT_ID`
-- `CENTIA_CLIENT_SECRET`
-- `CENTIA_USERNAME`
-- `CENTIA_PASSWORD`
-- `CENTIA_DATABASE`
-- optional: `CENTIA_ACCESS_TOKEN`
+- `GC2_HOST`
+- `GC2_CLIENT_ID`
+- `GC2_CLIENT_SECRET`
+- `GC2_USERNAME`
+- `GC2_PASSWORD`
+- `GC2_DATABASE`
+- optional: `GC2_ACCESS_TOKEN`
 
 Browser (Vite):
 
-- `VITE_CENTIA_HOST`
-- `VITE_CENTIA_CLIENT_ID`
-- `VITE_CENTIA_DATABASE`
+- `VITE_GC2_HOST`
+- `VITE_GC2_CLIENT_ID`
+- `VITE_GC2_DATABASE`
 
 Never commit secrets. Keep `.env.example` with placeholders.

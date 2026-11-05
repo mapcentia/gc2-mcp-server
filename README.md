@@ -120,6 +120,8 @@ This repository is a Claude Code plugin and its own marketplace. Installing it g
 /plugin install gc2@mapcentia
 ```
 
+Upgrading from the old plugin: the plugin was published as `centia@centia-io` until version 1.0.36. Run `/plugin uninstall centia@centia-io` and `/plugin marketplace remove centia-io`, then install `gc2@mapcentia` as above. Skill names changed from `centia-*` to `gc2-*`.
+
 Run `gc2 login` once so the server can pick up your session (see Authentication above). The skills are then available as `/gc2:gc2-rules`, `/gc2:gc2-ows`, etc., and Claude loads them automatically on GC2-related tasks.
 
 To try the plugin from a local checkout without installing it:

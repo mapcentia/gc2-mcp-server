@@ -9,7 +9,7 @@ Use this skill for the v4 Snapshots APIs: asynchronous exports of a relation to 
 
 ## Availability and access
 
-On GC2 local master as of 2026-09 — **not** on production `api.gc2.io`. MCP tools ship with `@mapcentia/gc2-mcp-server` >= 1.0.25 (server restart required); no `@mapcentia/gc2-sdk` class as of 0.2.16. **Job API is super-user only** (403 otherwise; 501 `SNAPSHOT_NOT_CONFIGURED` if the instance has no snapshot storage config). **Read API allows sub-users** — by schema ownership or layer read privilege (403 `INSUFFICIENT_PRIVILEGES`), but **never a sub-user a deny/limit geofence rule applies to** (403 `GEOFENCE_RULES_APPLY` — a whole-table file cannot honour a row filter; allow-rules do not block).
+On GC2 local master as of 2026-09 — **not** on production `api.gc2.io`. MCP tools ship with `@mapcentia/gc2-mcp-server` 1.1.0+ (server restart required); no `@mapcentia/gc2-sdk` class as of 0.3.0. **Job API is super-user only** (403 otherwise; 501 `SNAPSHOT_NOT_CONFIGURED` if the instance has no snapshot storage config). **Read API allows sub-users** — by schema ownership or layer read privilege (403 `INSUFFICIENT_PRIVILEGES`), but **never a sub-user a deny/limit geofence rule applies to** (403 `GEOFENCE_RULES_APPLY` — a whole-table file cannot honour a row filter; allow-rules do not block).
 
 ## Job API (queue and poll)
 
@@ -45,7 +45,7 @@ Scheduler jobs can queue snapshots automatically after each successful import (`
 
 | Mistake | Reality |
 |---|---|
-| Assuming production availability | GC2 local master only as of 2026-09; MCP tools need spec >= 1.0.25 + restart |
+| Assuming production availability | GC2 local master only as of 2026-09; MCP tools need `@mapcentia/gc2-mcp-server` 1.1.0+ + restart |
 | Queueing with a sub-user token | Job API is super-user only → `403`; only the read API allows sub-users |
 | Treating the `202` as "exported" | It queues a job — poll `getSnapshot` until `succeeded`/`failed` |
 | Expecting file bytes from the data tools | They return URL + HEAD metadata; fetch the URL with DuckDB/requests |

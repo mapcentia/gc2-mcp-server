@@ -9,7 +9,7 @@ Use this skill when configuring the per-schema map view or the cartographic styl
 
 ## Availability
 
-The Map API and the granular class/style/label sub-routes live on the GeoCloud2 branch `dev/multiple_styles`. As of 2026-08 they are **not** on production `api.gc2.io`. SDK support: `@mapcentia/gc2-sdk` >= 0.2.5 has `provisioning.maps.getMap/patchMap` and the `MapConfig` type.
+The Map API and the granular class/style/label sub-routes live on the GeoCloud2 branch `dev/multiple_styles`. As of 2026-08 they are **not** on production `api.gc2.io`. SDK support: `@mapcentia/gc2-sdk` 0.3.0+ has `provisioning.maps.getMap/patchMap` and the `MapConfig` type.
 
 ## Data model
 

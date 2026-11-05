@@ -12,7 +12,7 @@ Use this skill when MCP/SDK are insufficient and HTTP contracts are needed.
 Use this order:
 
 1. Local `openapi/openapi.json`
-2. URL from `CENTIA_OPENAPI_URL`
+2. URL from `GC2_OPENAPI_URL`
 3. User-provided OpenAPI JSON
 
 OpenAPI is the contract for described endpoints.
@@ -23,8 +23,8 @@ If allowed and needed, fetch into local cache:
 
 ```sh
 mkdir -p openapi
-if [ -n "$CENTIA_OPENAPI_URL" ] && [ ! -f "openapi/openapi.fetched.json" ]; then
-  curl -fsSL -H "Authorization: Bearer $CENTIA_ACCESS_TOKEN" "$CENTIA_OPENAPI_URL" -o openapi/openapi.fetched.json
+if [ -n "$GC2_OPENAPI_URL" ] && [ ! -f "openapi/openapi.fetched.json" ]; then
+  curl -fsSL -H "Authorization: Bearer $GC2_ACCESS_TOKEN" "$GC2_OPENAPI_URL" -o openapi/openapi.fetched.json
 fi
 ```
 
