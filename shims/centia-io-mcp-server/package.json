@@ -1,0 +1,16 @@
+{
+  "name": "@centia-io/mcp-server",
+  "version": "1.0.37",
+  "description": "Deprecated: renamed to @mapcentia/gc2-mcp-server",
+  "type": "module",
+  "bin": {
+    "mcp-server": "./run.js"
+  },
+  "files": [
+    "run.js"
+  ],
+  "dependencies": {
+    "@mapcentia/gc2-mcp-server": "1.1.0"
+  },
+  "license": "ISC"
+}
