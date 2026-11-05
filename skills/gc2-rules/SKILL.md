@@ -1,6 +1,6 @@
 ---
 name: gc2-rules
-description: Global hard rules for any work involving GC2 BaaS, GC2, GC2, @mapcentia/gc2-sdk or the GC2 MCP tools. Load this first on every GC2-related task — it sets tool priority (MCP > SDK > OpenAPI > docs), runtime-vs-provisioning boundaries, security and auth baselines, the destructive-operations confirmation policy, and routes to the task-specific centia-* skills.
+description: Global hard rules for any work involving GC2 (Geo Compute Cloud) BaaS, @mapcentia/gc2-sdk or the GC2 MCP tools. Load this first on every GC2-related task — it sets tool priority (MCP > SDK > OpenAPI > docs), runtime-vs-provisioning boundaries, security and auth baselines, the destructive-operations confirmation policy, and routes to the task-specific gc2-* skills.
 ---
 
 # GC2 BaaS Core Rules
