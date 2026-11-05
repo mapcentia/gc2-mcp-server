@@ -39,7 +39,7 @@ Optional local vendor mirror:
 ```sh
 mkdir -p vendor
 if [ ! -d "vendor/gc2-docs/docs" ]; then
-  git clone --depth 1 --filter=blob:none --sparse https://github.com/mapcentia/website.git vendor/gc2-docs
+  git clone --depth 1 --filter=blob:none --sparse https://github.com/mapcentia/gc2-website.git vendor/gc2-docs
   cd vendor/gc2-docs
   git sparse-checkout set docs
   cd ../..
