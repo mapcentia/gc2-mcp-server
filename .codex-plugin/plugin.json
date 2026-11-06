@@ -6,8 +6,8 @@
     "name": "MapCentia",
     "url": "https://gc2.io"
   },
-  "homepage": "https://github.com/mapcentia/gc2-mcp-server",
-  "repository": "https://github.com/mapcentia/gc2-mcp-server",
+  "homepage": "https://github.com/mapcentia/gc2-plugin",
+  "repository": "https://github.com/mapcentia/gc2-plugin",
   "license": "ISC",
   "keywords": [
     "gc2",
@@ -30,7 +30,7 @@
       "Write"
     ],
     "websiteURL": "https://gc2.io",
-    "supportURL": "https://github.com/mapcentia/gc2-mcp-server/issues",
+    "supportURL": "https://github.com/mapcentia/gc2-plugin/issues",
     "composerIcon": "./assets/logo.svg",
     "logo": "./assets/logo.svg"
   }
