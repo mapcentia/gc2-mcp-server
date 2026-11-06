@@ -21,10 +21,17 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "GC2 (Geo Compute Cloud)",
-    "shortDescription": "GC2 MCP tools and geospatial development skills",
+    "shortDescription": "GC2 MCP tools and skills",
+    "longDescription": "GC2 (Geo Compute Cloud) is a geospatial Backend as a Service on PostgreSQL/PostGIS. This plugin gives Codex the GC2 MCP server (tools generated from the GC2 OpenAPI spec: schemas, tables, SQL, OGC services, snapshots, scheduler, functions and more) plus skills for runtime SDK usage, provisioning, JSON-RPC, auth, OGC/OWS, map styling, realtime and delivery rules. Run `gc2 login` once so the server can use your session.",
     "developerName": "MapCentia",
     "category": "Developer Tools",
-    "capabilities": ["Read", "Write"],
-    "websiteURL": "https://gc2.io"
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://gc2.io",
+    "supportURL": "https://github.com/mapcentia/gc2-mcp-server/issues",
+    "composerIcon": "./assets/logo.svg",
+    "logo": "./assets/logo.svg"
   }
 }
